@@ -1,0 +1,136 @@
+﻿@model PagedList.IPagedList<Tens.Models.shipped>
+@using PagedList.Mvc;
+@using Tens.Helpers;
+@{
+    ViewBag.Title = "Shipped List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int pg = Convert.ToInt32(ViewBag.number);
+    //int prev = pg - 1;
+    int num = 1;
+    if (pg > 1)
+    {
+        num = ((pg * Model.PageSize) + 1) - Model.PageSize;
+    }
+}
+
+<div class="container-fluid">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Shipped/Create")" data-toggle="tooltip" title="Add New" class="btn btn-default"><i class="fa fa-plus"></i> Add New</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Shipped List</h3>
+			</div>
+			<div class="panel-body">
+				<div class="well">
+					 @using (Html.BeginForm("Index", "Shipped", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+                     {
+					    <div class="form-group">
+						        <label class="col-sm-2 control-label">First Date</label>
+						        <div class="col-sm-3">
+							        <div class="input-group date">
+		                        <input type="text" name="firstdate"  placeholder="First Date" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+		                        <span class="input-group-btn">
+		                  	        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+		                        </span>
+                    	    </div>
+						        </div>
+					    </div>
+					    <div class="form-group">
+						        <label class="col-sm-2 control-label">Last Date</label>
+						        <div class="col-sm-3">
+							        <div class="input-group date">
+		                        <input type="text" name="lastdate"  placeholder="Last Date" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+		                        <span class="input-group-btn">
+		                  	        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+		                        </span>
+                    	    </div>
+						        </div>
+					    </div>
+					    <div class="form-group">
+						    <label class="col-sm-2 control-label"></label>
+						    <div class="col-sm-3">
+							        <button type="submit" id="button-filter" class="btn btn-primary"><i class="fa fa-search"></i> Filter</button>
+						    </div>
+					    </div>
+                     }
+				</div>
+                @if (TempData.ContainsKey("message"))
+                {
+                    <div class="alert alert-@TempData["cls"]">
+                        <i class="fa fa-exclamation-circle"></i><small>@TempData["Message"]</small>
+                        <button type="button" class="close" data-dismiss="alert">
+                            ×
+                        </button>
+                    </div>
+                    TempData.Remove("message");
+                    TempData.Remove("cls");
+                }
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Shipped Code</th>
+								<th>Date Transaction</th>
+                                <th>Supplier</th>
+                                <th>Total Price</th>
+								<th>Total Items</th>
+                                <th>Total Cost</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+                         @if (Model != null)
+                         {
+                             foreach (var item in Model)
+                             { 
+                                 <tr>
+                                    <td>@num</td>
+                                    <td>@Html.DisplayFor(modelItem => item.code_shipped)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.date_transaction)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.supplier.name)</td>
+                                    <td>@MyHelpers.getTotalShipped(item.id_shipped,"price")</td>
+                                    <td>@MyHelpers.getTotalShipped(item.id_shipped, "item")</td>
+                                    <td>@(MyHelpers.getTotalShipped(item.id_shipped, "price") * MyHelpers.getTotalShipped(item.id_shipped, "item"))</td>
+                                    <td>
+                                       <a class="btn btn-sm btn-success" href="@Url.Content("~/Shipped/Edit")/@item.id_shipped">
+                                            <i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-sm btn-primary" href="@Url.Content("~/Shipped/View")/@item.id_shipped">
+                                            <i class="fa fa-search"></i></a>
+                                        <a class="btn btn-sm btn-danger" href="@Url.Content("~/Shipped/Delete")/@item.id_shipped" onclick="return confirm('Are you sure ??');">
+                                            <i class="fa fa-trash-o"></i></a>
+                                       <a target="_blank" class="btn btn-sm btn-warning" href="@Url.Content("~/Pdf/BillShipped")/@item.id_shipped">
+                                            <i class="fa fa-print"></i></a>             
+                                   </td>
+                                 </tr>
+                                 num++;
+                             }
+                         }
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="pagination">
+			@if (Model != null)
+            { 
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            }
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date').datetimepicker({
+            pickTime: false
+        });
+    });
+</script>

@@ -1,0 +1,142 @@
+﻿@model Tens.Models.supplier
+
+@{
+    ViewBag.Title = "Edit Suppliers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var supplier_address = ViewData["supplier_address"] as List<Tens.Models.suppliers_address>;
+    var address = ViewData["address"] as List<Tens.Models.address>;
+    DateTime date1 = supplier_address[0].date_address_from ?? DateTime.Now;
+    DateTime date2 = supplier_address[0].date_address_to ?? DateTime.Now;
+}
+
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Suppliers")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i>  Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+				<h3 class="panel-title">Detail Supplier</h3>
+			</div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Edit", "Suppliers", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                { 
+                     
+                     <div class="form-group">
+						<label class="col-sm-2 control-label">Date From</label>
+						<div class="col-sm-6">
+							  <label class="control-label">
+                                  <b>@date1.ToString("yyyy-MM-dd")</b>
+                              </label>
+						</div>
+					</div>
+                     <div class="form-group">
+						<label class="col-sm-2 control-label">Date To</label>
+						<div class="col-sm-6">
+							   <label class="control-label">
+                                  <b>@date2.ToString("yyyy-MM-dd")</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Name</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Html.DisplayFor(x=>x.name)</b>
+                              </label>
+						</div>
+					</div>
+                    
+                     <div class="form-group">
+						<label class="col-sm-2 control-label">Email</label>
+						<div class="col-sm-6">
+							  <label class="control-label">
+                                   <b>@Html.DisplayFor(x=>x.email)</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Phone</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Html.DisplayFor(x=>x.phone)</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Cellphone</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                   <b>@Html.DisplayFor(x=>x.cellphone)</b>
+                              </label>
+						</div>
+					</div> 
+                   <div class="form-group">
+						<label class="col-sm-2 control-label">Other Details</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                   <b>@Html.DisplayFor(x=>x.other_detils)</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Country</label>
+						<div class="col-sm-6">
+                           <label class="control-label">
+                                  <b>@address[0].country.country_name</b>
+                              </label>
+						</div>
+					</div>
+                     <div class="form-group">
+						<label class="col-sm-2 control-label">Area</label>
+						<div class="col-sm-6">
+                           <label class="control-label">
+                                  <b>@supplier_address[0].addresse_type.address_type_description</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Postal Code</label>
+						<div class="col-sm-6">
+							  <label class="control-label">
+                                  <b>@address[0].postal_code</b>
+                              </label>
+						</div>
+					</div>
+                     <div class="form-group">
+						<label class="col-sm-2 control-label">City</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                 <b>@address[0].city</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Address / Street</label>
+						<div class="col-sm-6">
+							  <label class="control-label">
+                                  <b>@address[0].description</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label">Other Address</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                   <b>@address[0].other_address_details</b>
+                              </label>
+						</div>
+					</div>
+                    
+                }
+            </div>
+        </div>
+    </div>
+</div>

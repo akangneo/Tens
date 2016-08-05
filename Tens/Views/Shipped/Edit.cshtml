@@ -1,0 +1,258 @@
+﻿@using Tens.Helpers;
+@{
+    ViewBag.Title = "Edit Shipped";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var shipped = ViewData["shipped"] as List<Tens.Models.shipped>;
+    var shipped_details = ViewData["shipped_details"] as List<Tens.Models.shipped_detail>;
+    int num = 1;
+    int index = 0;
+    int temp = 0;
+    DateTime date1 = shipped[0].date_transaction ?? DateTime.Now;
+}
+
+<div class="container-fluid">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Shipped")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i> Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Shipped Items</h3>
+			</div>
+			<div class="panel-body">
+				@using (Html.BeginForm("Edit", "Shipped", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+                { 
+                    <input type="hidden" name="id_shipped" value="@shipped[0].id_shipped" />
+                    <div class="form-group">
+						 <label class="col-sm-2 control-label">Shipped Code</label>
+						 <div class="col-sm-3">
+							 <input type="text" value="@shipped[0].code_shipped" name="code_shipped" id="code_shipped" class="form-control" readonly="true" required/>
+						 </div>
+					</div>
+					<div class="form-group">
+						 <label class="col-sm-2 control-label">Supplier</label>
+						 <div class="col-sm-3">
+							  <select name="supplier_id" id="supplier_id" class="form-control">
+                               <option></option>
+							    @foreach (var supplier in (ViewData["supplier"] as List<Tens.Models.supplier>))
+                                {
+                                   if (shipped[0].supplier_id == supplier.id_supplier)
+                                   { 
+                                        <option value="@supplier.id_supplier" selected>@supplier.name</option>
+                                   }
+                                   else
+                                   { 
+                                       <option value="@supplier.id_supplier">@supplier.name</option>
+                                   }
+                                }
+                              </select>
+						 </div>
+					</div>
+					<div class="form-group">
+						 <label class="col-sm-2 control-label">Date of Transaction</label>
+						 <div class="col-sm-3">
+							 <input type="text" id="date_transaction" name="date_transaction" value="@date1.ToString("yyyy-MM-dd")" class="form-control" readonly="true" required/>
+						 </div>
+					</div>
+                    <input type="hidden" id="test" />
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover" id="TData">
+							<thead>
+								<tr>
+									<td colspan="6">
+										<label># Details Of Shipped</label>
+										<a href="javascript:void(0)" onclick="AddItems()" title="Add New Room" class="btn pull-right btn-sm btn-success"><i class="fa fa-plus"></i> Add Item</a>
+									</td>
+								</tr>
+								<tr>
+                                    <th>No</th>
+									<th>Items</th>
+									<th>Price</th>
+									<th>Qty</th>
+									<th>Total</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+                                @foreach (var row in shipped_details)
+                                { 
+                                    <tr id="@index" class="index">
+                                        <td class='number'>@num</td>
+                                        <td><input type="hidden" name="id_item" id="@String.Format("id_item"+index)" onChange="javascript:price(this)" class="form-control id_item" required/></td>
+                                        <td><input type="text" value="@Convert.ToInt32(row.item_price)" name="price_item" id="@String.Format("price"+index)" class="form-control" readonly="true" required/></td>
+                                        <td><input type="number" value="@Convert.ToInt32(row.item_qty)" name="qty" min="1"  id="@String.Format("qty"+index)" class="form-control qty"  required/></td>
+                                        <td><input type="text" value="@Convert.ToInt32(row.total)" name="total" id="@String.Format("total"+index)" class="form-control" readonly="true" required/></td>
+                                        <td><a href="javascript:void(0)" onclick="javascript:deleteRow(this)" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Delete</a></td>
+                                    </tr>
+                                    num++;
+                                    index++;
+                                }
+							</tbody>
+						</table>
+					</div>
+					<div class="pull-right">
+						<button type="reset" data-toggle="tooltip" title="Reset Form" class="btn btn-warning"><i class="fa fa-refresh"></i> Reset</button>
+						<button type="submit" data-toggle="tooltip" title="Save" class="btn btn-primary"><i class="fa fa-save"></i> Update</button>
+					</div>
+                }
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+    function deleteRow(btn) {
+	   var row = btn.parentNode.parentNode;
+	   row.parentNode.removeChild(row);
+       $('.number').each(function(i){
+           $(this).text(i+1);
+       });
+	}
+
+    function AddItems() {
+        var row = $('#TData tbody tr').length;
+        if (row > 0) {
+            var index = $('.index').last().attr('id');
+            index = parseInt(index);
+            row = parseInt(row);
+            row = index + 1;
+        }
+        var html = '<tr id="' + row + '" class="index">';
+        html += "<td class='number'>"+(row+1)+"</td>";
+        html += '<td><input type="hidden" name="id_item" id="id_item' + row + '" onChange="javascript:price(this)" class="form-control id_item" required/></td>';
+        html += '<td><input type="text" name="price_item" id="price' + row + '" class="form-control" readonly="true" required/></td>';
+        html += '<td><input type="number" name="qty" min="1"  id="qty' + row + '" class="form-control qty"  required/></td>';
+        html += '<td><input type="text" name="total" id="total' + row + '" class="form-control" readonly="true" required/></td>';
+        html += '<td><a href="javascript:void(0)" onclick="javascript:deleteRow(this)" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Delete</a></td>';
+        html += '</tr>';
+        $('#TData tbody').append(html);
+        $('#id_item'+row).select2({
+            ajax: {
+                placeholder: 'Select Items',   
+                url: '@Url.Content("~/Shipped")/GetItems',
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term) {
+                    return {
+                        q: term, // search term
+                    };
+                },
+                results: function (data) {
+                    var myResults = [];
+                    $.each(data, function (index, item) {
+                        myResults.push({
+                            'id': item.id_item,
+                            'text': item.item_description
+                        });
+                    });
+                    return {
+                        results: myResults
+                    };
+                },
+                minimumInputLength: 3
+            }
+        });
+
+        $('#qty'+row).on('propertychange change', function() {
+            var price = parseInt($("#price"+row).val()) || 0;
+            var qty = parseInt($(this).val()) || 0;
+            var total = parseInt(price*qty) || 0;
+            $("#total"+row).val(total); 
+        });
+
+    }
+
+    function findDuplicate(value) {
+        var result = 0;
+        $(".id_item").each(function(){
+            if (this.value == value) {
+                result++;
+            }
+        });
+        return result - 1;
+    }
+
+    function price(x){
+		var id = $(x).attr('id');
+		var value = $('#'+id).val();
+        var index = id.substr(7);
+		$.ajax({
+			url: '@Url.Content("~/Shipped")/GetItemPrice/'+value,
+			dataType: 'json',
+			async: false,
+			success:function(data){
+               $("#price"+index).val(data.price);
+               $("#qty"+index).val(0);
+               $("#total"+index).val(0);
+			}
+		});
+        if(findDuplicate(value)==1){
+            $("#"+index).remove();
+            $('.number').each(function(i){
+                 $(this).text(i+1);
+            });
+        }
+	}
+
+
+    $(document).ready(function () {
+        $('select').select2();
+
+         @foreach (var row in shipped_details)
+         {
+            <text>
+                
+                $('@String.Format("#id_item"+temp)').select2({
+                    ajax: {
+                        placeholder: 'Select Items',   
+                        url: '@Url.Content("~/Shipped")/GetItems',
+                        dataType: 'json',
+                        quietMillis: 100,
+                        data: function (term) {
+                            return {
+                                q: term, // search term
+                            };
+                        },
+                        results: function (data) {
+                            var myResults = [];
+                            $.each(data, function (index, item) {
+                                myResults.push({
+                                    'id': item.id_item,
+                                    'text': item.item_description
+                                });
+                            });
+                            return {
+                                results: myResults
+                            };
+                        },
+                        minimumInputLength: 3
+                    }
+                });
+                 $('@String.Format("#id_item"+temp)').select2("data", { id: @MyHelpers.getIdItem(row.item_name),  text: "@row.item_name"  });
+
+
+                  $('@String.Format("#qty"+temp)').on('propertychange change', function() {
+                    var price = parseInt($('@String.Format("#price"+temp)').val()) || 0;
+                    var qty = parseInt($(this).val()) || 0;
+                    var total = parseInt(price*qty) || 0;
+                    $('@String.Format("#total"+temp)').val(total); 
+                });
+
+                var test =  $('@String.Format("#id_item"+temp)').val();
+                
+
+            </text>
+            temp++;
+         }
+        
+         
+    });
+
+    
+</script>

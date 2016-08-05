@@ -1,0 +1,198 @@
+﻿@model Tens.Models.inventrory_item
+
+@{
+    ViewBag.Title = "View Inventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var item_supplier = ViewData["item_supplier"] as List<Tens.Models.item_supplier>;
+    var item_stock = ViewData["item_stock"] as List<Tens.Models.item_stock_level>;
+    string fullPath = null;
+    string pathimage = Request.MapPath("~/Items/" + Model.photo);
+    if (System.IO.File.Exists(pathimage))
+    {
+        fullPath = Url.Content("~/") + "Items/" + Model.photo;
+    }
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Inventory")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i>  Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+				<h3 class="panel-title">View Item</h3>
+			</div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Edit", "Inventory", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                { 
+                     <div class="form-group ">
+						<label class="col-sm-3 control-label">Photo</label>
+						<div class="col-sm-3">
+							 <img class="img-responsive" src="@fullPath" />
+						</div>
+					</div>
+                
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Brand</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Model.brand.brand_name</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Categories</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Model.item_category.category_description</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Supplier</label>
+						<div class="col-sm-6">
+                             <label class="control-label">
+                                <b>@item_supplier[0].supplier.name</b>
+                             </label>
+						</div>
+					</div>
+                     <div class="form-group ">
+						<label class="col-sm-3 control-label">Item Description</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Model.item_description</b>
+                              </label>
+						</div>
+					</div> 
+                     <div class="form-group ">
+						<label class="col-sm-3 control-label">Avarage Monlty Usage</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@Model.avarage_montly_usage</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Recorder Level</label>
+						<div class="col-sm-2">
+							  <label class="control-label">
+                                  <b>@Model.recorder_level</b>
+                              </label>
+						</div>
+					</div>
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Recorder Quantity</label>
+						<div class="col-sm-2">
+							  <label class="control-label">
+                                  <b>@Model.recorder_quantity</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Stocking Taking Date</label>
+						<div class="col-sm-2">
+							  <label class="control-label">
+                                  <b>@item_stock[0].stocking_taking_date</b>
+                              </label>
+						</div>
+					</div> 
+                     <div class="form-group ">
+						<label class="col-sm-3 control-label">Other Item Details</label>
+						<div class="col-sm-6">
+							 <label class="control-label">
+                                  <b>@Model.other_item_details</b>
+                              </label>
+						</div>
+					</div> 
+                     <div class="form-group ">
+						<label class="col-sm-3 control-label">Value Supplied to Date</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].value_supplied_to_date</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Total Quantity Supplied to Date</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].total_quantity_supplied_to_date</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">First Item Supplied to Date</label>
+						<div class="col-sm-2">
+							  <label class="control-label">
+                                  <b>@item_supplier[0].first_item_supplied_to_date</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Last Item Supplied to Date</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].last_item_supplied_to_date</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Delivery Lead Time</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].delivery_lead_time</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Standar Price</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].standard_price</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Percentage Discount</label>
+						<div class="col-sm-2">
+							<label class="control-label">
+                                  <b>@item_supplier[0].percentage_discount</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Minimum Order Quantity</label>
+						<div class="col-sm-2">
+							 <label class="control-label">
+                                  <b>@item_supplier[0].minimum_order_quantity</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Maximum Order Quantity</label>
+						<div class="col-sm-2">
+							<label class="control-label">
+                                  <b>@item_supplier[0].maximum_order_quantity</b>
+                              </label>
+						</div>
+					</div> 
+                    <div class="form-group ">
+						<label class="col-sm-3 control-label">Other Details</label>
+						<div class="col-sm-6">
+							<label class="control-label">
+                                  <b>@item_supplier[0].other_item_supplier_details</b>
+                              </label>
+						</div>
+					</div> 
+                   
+                }
+            </div>
+        </div>
+    </div>
+</div>

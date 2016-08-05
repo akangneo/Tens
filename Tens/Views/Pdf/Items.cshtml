@@ -1,0 +1,51 @@
+﻿@model List<Tens.Models.inventrory_item>
+@using Tens.Helpers;
+@{
+    Layout = null;
+    int num = 1;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Report Of Items</title>
+</head>
+<body>
+     <table align="center">
+		<tr>
+			<td align="center" style="font-family:arial; font-size: 24px; font-weight:bold;">Report Of Item</td>
+		</tr>
+	</table>
+    <table border="" align="left" cellpadding="2" style="font-family:arial; font-size: 10px; margin-top: 50px; border-collapse: collapse; table-layout:fixed; width:100%;">
+        <thead>
+          <tr>
+            <th>#</th>
+			<th>Item Name</th>
+            <th>Brand</th>
+			<th>Total Stock</th>
+            <th>Total Shipped</th>
+            <th>Total Sales</th>
+          </tr>
+       </thead>
+       <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                { 
+                <tr>
+                    <td>@num</td>
+                    <td>@Html.DisplayFor(modelItem => item.item_description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.brand.brand_name)</td>
+                    <td>@MyHelpers.GetReportItem(item.id_item, "stock")</td>
+                    <td>@MyHelpers.GetReportItem(item.id_item, "shipped")</td>
+                    <td>@MyHelpers.GetReportItem(item.id_item, "sales")</td>
+                </tr>
+                    num++;
+                }
+            }
+       </tbody>
+    </table>
+</body>
+</html>

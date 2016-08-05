@@ -1,0 +1,72 @@
+﻿@{
+    var us = Session["user"] as Dictionary<String, String>;
+    var role_id = @us["role_id"];
+        
+}
+
+<li id="dashboard">
+    <a href="@Url.Content("~/home/index")"><i class="fa fa-dashboard fa-fw"></i> <span>Dashboard</span></a>
+</li>
+
+
+@if (role_id == "1")
+{ 
+ 
+     <li>
+        <a class="parent"><i class="fa fa fa-inbox fa-fw"></i> <span>Master</span></a>
+        <ul>
+            <li>@Html.ActionLink("Address types", "Index", "Address")</li>
+            <li>@Html.ActionLink("Suppliers", "Index", "Suppliers")</li>
+            <li>@Html.ActionLink("Brands", "Index", "Brands")</li>
+            <li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+            <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+            <li>@Html.ActionLink("Persons", "Index", "Persons")</li>
+            <li>@Html.ActionLink("Items", "Index", "Inventory")</li>
+            <li>@Html.ActionLink("Item Categories", "Index", "Categories")</li>
+            <li>@Html.ActionLink("Item Stock level", "Levels", "Items")</li>
+        </ul>
+    </li>
+    <li>
+        <a class="parent"><i class="fa fa-money fa-fw"></i> <span>Transaction</span></a>
+        <ul>
+            <li>@Html.ActionLink("Point Of Sales", "Index", "Sales")</li>
+            <li>@Html.ActionLink("Shipped", "Index", "Shipped")</li>
+        </ul>
+    </li>
+    <li>
+        <a class="parent"><i class="fa fa-file fa-fw"></i> <span>Reports</span></a>
+        <ul>
+            <li>@Html.ActionLink("Report Of Sales", "Sales", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Shipped", "Shipped", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Items", "Items", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Brands", "Brand", "Reports")</li>
+        </ul>
+    </li>
+    
+}
+
+@if (role_id == "3")
+{
+    <li>
+        <a class="parent"><i class="fa fa-money fa-fw"></i> <span>Transaction</span></a>
+        <ul>
+            <li>@Html.ActionLink("Point Of Sales", "Index", "Sales")</li>
+            <li>@Html.ActionLink("Shipped", "Index", "Shipped")</li>
+        </ul>
+    </li>
+}
+
+@if (role_id == "4")
+{
+     <li>
+        <a class="parent"><i class="fa fa-file fa-fw"></i> <span>Reports</span></a>
+        <ul>
+            <li>@Html.ActionLink("Report Of Sales", "Sales", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Shipped", "Shipped", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Items", "Items", "Reports")</li>
+            <li>@Html.ActionLink("Report Of Brands", "Brand", "Reports")</li>
+        </ul>
+    </li>
+}
+
+

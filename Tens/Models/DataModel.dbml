@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="marketdb" Class="DataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=Sandy-PC\SQLEXPRESS;Initial Catalog=marketdb;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="marketdbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.addresse_types" Member="addresse_types">
+    <Type Name="addresse_type">
+      <Column Name="address_type_code" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="address_type_description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="addresse_type_suppliers_address" Member="suppliers_addresses" ThisKey="address_type_code" OtherKey="address_type_code" Type="suppliers_address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users" Member="users">
+    <Type Name="user">
+      <Column Name="id_user" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="role_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="person_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="date_expired" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="user_sale" Member="sales" ThisKey="id_user" OtherKey="user_id" Type="sale" />
+      <Association Name="user_shipped" Member="shippeds" ThisKey="id_user" OtherKey="user_id" Type="shipped" />
+      <Association Name="person_user" Member="person" ThisKey="person_id" OtherKey="id_person" Type="person" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="role_user" Member="role" ThisKey="role_id" OtherKey="id_role" Type="role" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.addresses" Member="addresses">
+    <Type Name="address">
+      <Column Name="id_address" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="city" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="postal_code" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="country_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="other_address_details" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="address_person" Member="persons" ThisKey="id_address" OtherKey="address_id" Type="person" />
+      <Association Name="address_suppliers_address" Member="suppliers_addresses" ThisKey="id_address" OtherKey="address_id" Type="suppliers_address" />
+      <Association Name="country_address" Member="country" ThisKey="country_id" OtherKey="id_country" Type="country" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.brands" Member="brands">
+    <Type Name="brand">
+      <Column Name="id_brand" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="brand_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="brand_inventrory_item" Member="inventrory_items" ThisKey="id_brand" OtherKey="brand_id" Type="inventrory_item" />
+    </Type>
+  </Table>
+  <Table Name="dbo.countries" Member="countries">
+    <Type Name="country">
+      <Column Name="id_country" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="country_name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="country_address" Member="addresses" ThisKey="id_country" OtherKey="country_id" Type="address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.inventrory_items" Member="inventrory_items">
+    <Type Name="inventrory_item">
+      <Column Name="id_item" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="brand_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="item_category_code" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="item_description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="avarage_montly_usage" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="recorder_level" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="recorder_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="other_item_details" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="photo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="inventrory_item_item_stock_level" Member="item_stock_level" ThisKey="id_item" OtherKey="item_id" Type="item_stock_level" Cardinality="One" />
+      <Association Name="inventrory_item_item_supplier" Member="item_suppliers" ThisKey="id_item" OtherKey="item_id" Type="item_supplier" />
+      <Association Name="brand_inventrory_item" Member="brand" ThisKey="brand_id" OtherKey="id_brand" Type="brand" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="item_category_inventrory_item" Member="item_category" ThisKey="item_category_code" OtherKey="item_category_code" Type="item_category" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.item_categories" Member="item_categories">
+    <Type Name="item_category">
+      <Column Name="item_category_code" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="category_description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="item_category_inventrory_item" Member="inventrory_items" ThisKey="item_category_code" OtherKey="item_category_code" Type="inventrory_item" />
+    </Type>
+  </Table>
+  <Table Name="dbo.item_stock_levels" Member="item_stock_levels">
+    <Type Name="item_stock_level">
+      <Column Name="item_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="stocking_taking_date" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="quantity_in_stock" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="inventrory_item_item_stock_level" Member="inventrory_item" ThisKey="item_id" OtherKey="id_item" Type="inventrory_item" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.item_suppliers" Member="item_suppliers">
+    <Type Name="item_supplier">
+      <Column Name="item_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="supplier_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="value_supplied_to_date" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="total_quantity_supplied_to_date" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="first_item_supplied_to_date" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="last_item_supplied_to_date" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="delivery_lead_time" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="standard_price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="percentage_discount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="minimum_order_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="maximum_order_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="other_item_supplier_details" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="inventrory_item_item_supplier" Member="inventrory_item" ThisKey="item_id" OtherKey="id_item" Type="inventrory_item" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="supplier_item_supplier" Member="supplier" ThisKey="supplier_id" OtherKey="id_supplier" Type="supplier" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.persons" Member="persons">
+    <Type Name="person">
+      <Column Name="id_person" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="person_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="gender" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="cellphone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="person_user" Member="users" ThisKey="id_person" OtherKey="person_id" Type="user" />
+      <Association Name="address_person" Member="address" ThisKey="address_id" OtherKey="id_address" Type="address" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.roles" Member="roles">
+    <Type Name="role">
+      <Column Name="id_role" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="role_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="role_user" Member="users" ThisKey="id_role" OtherKey="role_id" Type="user" />
+    </Type>
+  </Table>
+  <Table Name="dbo.sales" Member="sales">
+    <Type Name="sale">
+      <Column Name="id_sales" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date_transaction" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="code_sales" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="disc" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="sub_total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="grand_total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="tax" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="sale_sales_detail" Member="sales_details" ThisKey="id_sales" OtherKey="sales_id" Type="sales_detail" />
+      <Association Name="user_sale" Member="user" ThisKey="user_id" OtherKey="id_user" Type="user" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.sales_details" Member="sales_details">
+    <Type Name="sales_detail">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sales_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="item_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="item_price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="item_qty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="sale_sales_detail" Member="sale" ThisKey="sales_id" OtherKey="id_sales" Type="sale" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.shipped" Member="shippeds">
+    <Type Name="shipped">
+      <Column Name="id_shipped" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="code_shipped" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="supplier_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="date_transaction" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="disc" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="sub_total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="grand_totall" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="shipped_shipped_detail" Member="shipped_details" ThisKey="id_shipped" OtherKey="shipped_id" Type="shipped_detail" />
+      <Association Name="user_shipped" Member="user" ThisKey="user_id" OtherKey="id_user" Type="user" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="supplier_shipped" Member="supplier" ThisKey="supplier_id" OtherKey="id_supplier" Type="supplier" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.shipped_details" Member="shipped_details">
+    <Type Name="shipped_detail">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="shipped_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="item_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="item_price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="item_qty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="total" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="shipped_shipped_detail" Member="shipped" ThisKey="shipped_id" OtherKey="id_shipped" Type="shipped" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.suppliers" Member="suppliers">
+    <Type Name="supplier">
+      <Column Name="id_supplier" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="cellphone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="other_detils" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="supplier_item_supplier" Member="item_suppliers" ThisKey="id_supplier" OtherKey="supplier_id" Type="item_supplier" />
+      <Association Name="supplier_shipped" Member="shippeds" ThisKey="id_supplier" OtherKey="supplier_id" Type="shipped" />
+      <Association Name="supplier_suppliers_address" Member="suppliers_addresses" ThisKey="id_supplier" OtherKey="supplier_id" Type="suppliers_address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.suppliers_addresses" Member="suppliers_addresses">
+    <Type Name="suppliers_address">
+      <Column Name="id_suppliers_address" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="address_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="supplier_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="address_type_code" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="date_address_from" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="date_address_to" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="addresse_type_suppliers_address" Member="addresse_type" ThisKey="address_type_code" OtherKey="address_type_code" Type="addresse_type" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="address_suppliers_address" Member="address" ThisKey="address_id" OtherKey="id_address" Type="address" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="supplier_suppliers_address" Member="supplier" ThisKey="supplier_id" OtherKey="id_supplier" Type="supplier" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+</Database>

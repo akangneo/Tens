@@ -1,0 +1,121 @@
+﻿@model PagedList.IPagedList<Tens.Models.supplier>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "List Of Suppliers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int pg = Convert.ToInt32(ViewBag.number);
+    //int prev = pg - 1;
+    int num = 1;
+    if (pg > 1)
+    {
+        num = ((pg * Model.PageSize) + 1) - Model.PageSize;
+    }
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel-body">
+            <div class="row">
+                <div class="pull-right">
+                    <a href="@Url.Content("~/Suppliers/Create")" data-toggle="tooltip" title="Add New" class="btn btn-default">
+                        <i class="fa fa-plus"></i> Add New</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Person List</h3>
+            </div>
+            <div class="panel-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @using (Html.BeginForm())
+                            { 
+                                <div class="form-group">
+                                    <label class="control-label" for="search">
+                                        Search</label>
+                                    <input type="text" id="SearchString" name="SearchString" value="" placeholder="Enter some key.."
+                                        id="search" class="form-control" />
+                                </div>
+                                <button type="submit" id="button-filter" class="btn btn-primary pull-right">
+                                    <i class="fa fa-search"></i> Filter
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                @if (TempData.ContainsKey("message"))
+                {
+                    <div class="alert alert-@TempData["cls"]">
+                        <i class="fa fa-exclamation-circle"></i><small>@TempData["Message"]</small>
+                        <button type="button" class="close" data-dismiss="alert">
+                            ×
+                        </button>
+                    </div>
+                    TempData.Remove("message");
+                    TempData.Remove("cls");
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Phone
+                                </th>
+                                <th>
+                                    Other Details
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@num</td>
+                                        <td>@Html.DisplayFor(modelItem => item.name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.email)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.phone)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.other_detils)</td>
+                                        <td>
+                                           <a class="btn btn-sm btn-success" href="@Url.Content("~/Suppliers/Edit")/@item.id_supplier">
+                                               <i class="fa fa-pencil"></i></a>
+                                           <a class="btn btn-sm btn-primary" href="@Url.Content("~/Suppliers/View")/@item.id_supplier">
+                                               <i class="fa fa-search"></i></a>
+                                           <a class="btn btn-sm btn-danger" href="@Url.Content("~/Suppliers/Delete")/@item.id_supplier" onclick="return confirm('Are you sure ??');">
+                                               <i class="fa fa-trash-o"></i></a>
+                                       </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination">
+            @if (Model != null)
+            { 
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            }
+        </div>
+    </div>
+</div>

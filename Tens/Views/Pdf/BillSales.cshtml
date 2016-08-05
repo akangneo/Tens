@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+    var sales = ViewData["sales"] as List<Tens.Models.sale>;
+    var sales_details = ViewData["sales_details"] as List<Tens.Models.sales_detail>;
+    int num = 1;
+    decimal total = 0;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Bill Sales</title>
+</head>
+<body>
+    <table align="center">
+        <tr>
+		    <td align="center" style="font-family:arial; font-size: 15px; font-weight:bold;">Bill of Sales</td>
+	    </tr>
+    </table>
+    <table  align="left" cellpadding="5" style="font-family:arial; font-size: 10px; margin-top: 20px; border-collapse: collapse; table-layout:fixed; width:100%;">
+        <tr>
+		    <td>Date Of Transaction</td>
+            <td>: @sales[0].date_transaction</td>
+	    </tr>
+        <tr>
+		    <td>Casheir</td>
+            <td>: @sales[0].user.person.person_name</td>
+	    </tr>
+    </table>
+    <table  align="left" cellpadding="8" style="font-family:arial; font-size: 10px; margin-top: 20px; border-collapse: collapse; table-layout:fixed; width:100%;">
+        <thead>
+			<tr>
+				<th>No</th>
+				<th>Items</th>
+				<th>Price</th>
+				<th>Qty</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+        <tbody>
+            @foreach (var row in sales_details)
+            { 
+                <tr>
+                    <td>@num</td>
+                    <td>@row.item_name</td>
+                    <td>@Convert.ToInt32(row.item_price)</td>
+                    <td>@Convert.ToInt32(row.item_qty)</td>
+                    <td>@Convert.ToInt32(row.total)</td>
+                </tr>
+                num++;
+            }
+	    </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" align="right"><b>Disc</b></td>
+                <td>@Convert.ToInt32(sales[0].disc)</td>
+            </tr>
+            <tr>
+                <td colspan="4" align="right"><b>Subtotal</b></td>
+                <td>@Convert.ToInt32(sales[0].sub_total)</td>
+            </tr>
+            <tr>
+                <td colspan="4" align="right"><b>Grand Total</b></td>
+                <td>@Convert.ToInt32(sales[0].grand_total)</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

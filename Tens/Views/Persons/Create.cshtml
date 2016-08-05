@@ -1,0 +1,136 @@
+﻿@model Tens.Models.person
+
+@{
+    ViewBag.Title = "Create New Person";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Persons")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i>  Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+				<h3 class="panel-title">Create New Person</h3>
+			</div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Create", "Persons", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                { 
+                     <div class="form-group required">
+						<label class="col-sm-2 control-label">Photo</label>
+						<div class="col-sm-6">
+							 <input type="file" name="file" id="file"  />
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Roles</label>
+						<div class="col-sm-6">
+							  <select name="role_id" id="role_id" class="form-control">
+                               <option></option>
+							   @foreach (var role in (ViewData["roles"] as List<Tens.Models.role>))
+                              {
+                                 <option value="@role.id_role">@role.role_name</option>
+                              }
+                           </select>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Fullname</label>
+						<div class="col-sm-6">
+							 @Html.TextBoxFor(model => model.person_name, new { @class = "form-control", required = "required" })
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Gender</label>
+						<div class="col-sm-6">
+                             <label class="radio-inline">
+								  @Html.RadioButtonFor(model => model.gender, 1, new { required = "required" })  Male
+							</label>
+							<label class="radio-inline">
+								 @Html.RadioButtonFor(model => model.gender, 2, new { required = "required" }) Female
+							</label>
+						</div>
+					</div>
+                     <div class="form-group required">
+						<label class="col-sm-2 control-label">Email</label>
+						<div class="col-sm-6">
+							 @Html.TextBoxFor(model => model.email, new { @type = "email", @class = "form-control", required = "required" })
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Phone</label>
+						<div class="col-sm-6">
+							 @Html.TextBoxFor(model => model.phone, new { @class = "form-control", required = "required" })
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Cellphone</label>
+						<div class="col-sm-6">
+							 @Html.TextBoxFor(model => model.cellphone, new { @class = "form-control", required = "required" })
+						</div>
+					</div> 
+                   
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Country</label>
+						<div class="col-sm-6">
+                           <select name="country_id" id="country_id" class="form-control">
+                               <option></option>
+							   @foreach (var country in (ViewData["countries"] as List<Tens.Models.country>))
+                              {
+                                 <option value="@country.id_country">@country.country_name</option>
+                              }
+                           </select>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Postal Code</label>
+						<div class="col-sm-6">
+							 <input type="text" id="postal_code" name="postal_code" class="form-control" required/>
+						</div>
+					</div>
+                     <div class="form-group required">
+						<label class="col-sm-2 control-label">City</label>
+						<div class="col-sm-6">
+							 <input type="text" id="city" name="city" class="form-control" required/>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Address / Street</label>
+						<div class="col-sm-6">
+							 <textarea class="form-control" id="address" name="address" rows="5"></textarea>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Other Address</label>
+						<div class="col-sm-6">
+							 <textarea class="form-control" id="other_address" name="other_address" rows="5"></textarea>
+						</div>
+					</div>
+                    <div class="pull-right">
+						<button type="reset" data-toggle="tooltip" title="Reset Form" class="btn btn-warning">
+							<i class="fa fa-refresh"></i> Reset
+						</button>
+						<button type="submit" data-toggle="tooltip" title="Save" class="btn btn-primary">
+							<i class="fa fa-save"></i> Save
+						</button>
+					</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=file]').fileinput({
+            showUpload: false
+        });
+        $('select').select2();
+    });
+</script>

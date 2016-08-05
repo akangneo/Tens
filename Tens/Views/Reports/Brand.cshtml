@@ -1,0 +1,96 @@
+﻿@model PagedList.IPagedList<Tens.Models.brand>
+@using PagedList.Mvc;
+@using Tens.Helpers;
+@{
+    ViewBag.Title = "Brand";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int pg = Convert.ToInt32(ViewBag.number);
+    //int prev = pg - 1;
+    int num = 1;
+    if (pg > 1)
+    {
+        num = ((pg * Model.PageSize) + 1) - Model.PageSize;
+    }
+}
+
+<div class="container-fluid">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Report Of Brands</h3>
+			</div>
+			<div class="panel-body">
+			    <div class="well">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @using (Html.BeginForm())
+                            { 
+                                <div class="form-group">
+                                    <label class="control-label" for="search">
+                                        Search</label>
+                                    <input type="text" id="SearchString" name="SearchString" value="" placeholder="Brands Name"
+                                        id="search" class="form-control" />
+                                </div>
+                                <button type="submit" id="button-filter" class="btn btn-primary pull-right">
+                                    <i class="fa fa-search"></i>Filter
+                                </button>
+                                <a target="_blank" href="@Url.Content("~/Pdf/Brand")" class="btn btn-warning pull-left"><i class="fa fa-print"></i> Print</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Brand Name</th>
+								<th>Total Stock</th>
+                                <th>Total Shipped</th>
+                                <th>Total Sales</th>
+							</tr>
+						</thead>
+						<tbody>
+                             @if (Model != null)
+                             {
+                                 foreach (var item in Model)
+                                 { 
+                                    <tr>
+                                        <td>@num</td>
+                                        <td>@Html.DisplayFor(modelItem => item.brand_name)</td>
+                                        <td>@MyHelpers.GetReportBrand(item.id_brand, "stock")</td>
+                                        <td>@MyHelpers.GetReportBrand(item.id_brand, "shipped")</td>
+                                        <td>@MyHelpers.GetReportBrand(item.id_brand, "sales")</td>
+                                    </tr>
+                                     num++;
+                                 }
+                             }
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="pagination">
+			@if (Model != null)
+           { 
+                 @Html.PagedListPager(Model, page => Url.Action("Brand", new { page }))
+           }
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date').datetimepicker({
+            pickTime: false
+        });
+    });
+</script>

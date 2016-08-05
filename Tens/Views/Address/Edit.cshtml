@@ -1,0 +1,50 @@
+﻿@model Tens.Models.addresse_type
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Address")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i> Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Address</h3>
+			</div>
+			<div class="panel-body">
+				@using (Html.BeginForm("Edit", "Address", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+                { 
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Address Code</label>
+						<div class="col-sm-6">
+							 @Html.TextBoxFor(model => model.address_type_code, new { @class = "form-control", required = "required" ,@readonly="true" })
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Address Name</label>
+						<div class="col-sm-6">
+							 @Html.TextAreaFor(model => model.address_type_description, new { @class = "form-control", required = "required" })
+						</div>
+					</div>
+					<div class="pull-right">
+						<button type="reset" data-toggle="tooltip" title="Reset Form" class="btn btn-warning">
+							<i class="fa fa-refresh"></i> Reset
+						</button>
+						<button type="submit" data-toggle="tooltip" title="Updated" class="btn btn-primary">
+							<i class="fa fa-save"></i> Update
+						</button>
+					</div>
+				            
+                }
+			</div>
+		</div>
+	</div>
+</div>

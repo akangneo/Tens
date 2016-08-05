@@ -1,0 +1,228 @@
+﻿@model Tens.Models.inventrory_item
+
+@{
+    ViewBag.Title = "Edit Inventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var item_supplier = ViewData["item_supplier"] as List<Tens.Models.item_supplier>;
+    var item_stock = ViewData["item_stock"] as List<Tens.Models.item_stock_level>;
+    string fullPath = null;
+    string pathimage = Request.MapPath("~/Items/" + Model.photo);
+    if (System.IO.File.Exists(pathimage))
+    {
+        fullPath = Url.Content("~/") + "Items/" + Model.photo;
+    }
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Inventory")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i>  Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+				<h3 class="panel-title">Edit Item</h3>
+			</div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Edit", "Inventory", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                { 
+                     <div class="form-group required">
+						<label class="col-sm-3 control-label">Photo</label>
+						<div class="col-sm-6">
+							 <input type="file" name="file" id="file"  />
+						</div>
+					</div>
+                    @Html.HiddenFor(x=>x.id_item)
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Brand</label>
+						<div class="col-sm-6">
+							<select class="form-control" name="brand_id" id="brand_id" required>
+                                <option></option>
+                                @foreach (var brand in (ViewData["brand"] as List<Tens.Models.brand>))
+                                {
+                                    if (brand.id_brand == Model.brand_id)
+                                    {
+                                        <option value="@brand.id_brand" selected>@brand.brand_name</option>
+                                    }
+                                    else
+                                    { 
+                                        <option value="@brand.id_brand">@brand.brand_name</option>
+                                    }
+                                }
+                            </select>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Categories</label>
+						<div class="col-sm-6">
+							<select class="form-control" name="item_category_code" id="item_category_code" required>
+                                <option></option>
+                                 @foreach (var category in (ViewData["category"] as List<Tens.Models.item_category>))
+                                 {
+                                     if (category.item_category_code == Model.item_category_code)
+                                     {
+                                        <option value="@category.item_category_code" selected>@category.category_description</option>
+                                     }
+                                     else
+                                     {
+                                        <option value="@category.item_category_code">@category.category_description</option>
+                                     }
+                                 }
+                            </select>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Supplier</label>
+						<div class="col-sm-6">
+                           <select class="form-control" name="supplier_id" id="supplier_id" required>
+                                <option></option>
+                                 @foreach (var supplier in (ViewData["supplier"] as List<Tens.Models.supplier>))
+                                 {
+                                     if (item_supplier[0].supplier_id == supplier.id_supplier)
+                                     {
+                                         <option value="@supplier.id_supplier" selected>@supplier.name</option>
+                                     }
+                                     else
+                                     { 
+                                         <option value="@supplier.id_supplier">@supplier.name</option>
+                                     }
+                                 }
+                            </select>
+						</div>
+					</div>
+                     <div class="form-group required">
+						<label class="col-sm-3 control-label">Item Description</label>
+						<div class="col-sm-6">
+							<textarea class="form-control"  id="item_description" name="item_description" rows="5">@Model.item_description</textarea>
+						</div>
+					</div> 
+                     <div class="form-group required">
+						<label class="col-sm-3 control-label">Avarage Monlty Usage</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@Model.avarage_montly_usage"  class="form-control" name="avarage_montly_usage" id="avarage_montly_usage"  required/>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Recorder Level</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@Model.recorder_level" class="form-control" name="recorder_level" id="recorder_level"  required/>
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Recorder Quantity</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@Model.recorder_quantity" class="form-control" name="recorder_quantity" id="recorder_quantity"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Stocking Taking Date</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@item_stock[0].stocking_taking_date"  class="form-control" name="stocking_taking_date" id="stocking_taking_date"  required/>
+						</div>
+					</div> 
+                     <div class="form-group required">
+						<label class="col-sm-3 control-label">Other Item Details</label>
+						<div class="col-sm-6">
+							<textarea class="form-control" id="other_item_details" name="other_item_details" rows="5">@Model.other_item_details</textarea>
+						</div>
+					</div> 
+                     <div class="form-group required">
+						<label class="col-sm-3 control-label">Value Supplied to Date</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@item_supplier[0].value_supplied_to_date" class="form-control" name="value_supplied_to_date" id="value_supplied_to_date"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Total Quantity Supplied to Date</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@item_supplier[0].total_quantity_supplied_to_date" class="form-control" name="total_quantity_supplied_to_date" id="total_quantity_supplied_to_date"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">First Item Supplied to Date</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@item_supplier[0].first_item_supplied_to_date" class="form-control" name="first_item_supplied_to_date" id="first_item_supplied_to_date"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Last Item Supplied to Date</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" value="@item_supplier[0].last_item_supplied_to_date" class="form-control" name="last_item_supplied_to_date" id="last_item_supplied_to_date"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Delivery Lead Time</label>
+						<div class="col-sm-2">
+							<input type="text" name="delivery_lead_time" value="@item_supplier[0].delivery_lead_time" id="delivery_lead_time" class="form-control dates"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Standar Price</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" class="form-control" value="@Convert.ToInt32(item_supplier[0].standard_price)" name="standard_price" id="standard_price"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Percentage Discount</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" max="100" class="form-control" value="@item_supplier[0].percentage_discount" name="percentage_discount" id="percentage_discount"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Minimum Order Quantity</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" class="form-control" value="@item_supplier[0].minimum_order_quantity" name="minimum_order_quantity" id="minimum_order_quantity"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Maximum Order Quantity</label>
+						<div class="col-sm-2">
+							 <input type="number" min="0" class="form-control" value="@item_supplier[0].maximum_order_quantity" name="maximum_order_quantity" id="maximum_order_quantity"  required/>
+						</div>
+					</div> 
+                    <div class="form-group required">
+						<label class="col-sm-3 control-label">Other Details</label>
+						<div class="col-sm-6">
+							<textarea class="form-control" id="other_item_supplier_details" name="other_item_supplier_details" rows="5">@item_supplier[0].other_item_supplier_details</textarea>
+						</div>
+					</div> 
+                    <div class="pull-right">
+						<button type="reset" data-toggle="tooltip" title="Reset Form" class="btn btn-warning">
+							<i class="fa fa-refresh"></i> Reset
+						</button>
+						<button type="submit" data-toggle="tooltip" title="Save" class="btn btn-primary">
+							<i class="fa fa-save"></i> Update
+						</button>
+					</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var image = "@fullPath";
+        if (image != "") {
+            $('input[type=file]').fileinput({
+                initialPreview: [
+					"<img src='" + image + "' class='file-preview-image' alt='Upload Foto' title='Upload Foto'>",
+				],
+                showUpload: false
+            });
+        } else {
+            $('input[type=file]').fileinput({
+                showUpload: false
+            });
+        }
+        $('select').select2();
+        $('.dates').datetimepicker({
+            pickDate: false,
+            format: 'HH:mm'
+        });
+    });
+</script>

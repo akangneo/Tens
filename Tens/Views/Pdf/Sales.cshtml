@@ -1,0 +1,62 @@
+﻿@model List<Tens.Models.sale>
+@using PagedList.Mvc;
+@{
+    Layout = null;
+    int num = 1;
+    decimal total = 0;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Report Of Sales</title>
+</head>
+<body>
+    <table align="center">
+		<tr>
+			<td align="center" style="font-family:arial; font-size: 24px; font-weight:bold;">Report Of Sales</td>
+		</tr>
+	</table>
+    <table border="" align="left" cellpadding="2" style="font-family:arial; font-size: 10px; margin-top: 50px; border-collapse: collapse; table-layout:fixed; width:100%;">
+        <thead>
+		    <tr>
+				<th>#</th>
+				<th>Sales Code</th>
+				<th>Date Transaction</th>
+                <th>Discount</th>
+				<th>Subtotal</th>
+                <th>Grand Total</th>
+			</tr>
+	    </thead>
+	    <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                { 
+                     <tr>
+                        <td>@num</td>
+                        <td>@Html.DisplayFor(modelItem => item.code_sales)</td>
+                        <td>@Html.DisplayFor(modelItem => item.date_transaction)</td>
+                        <td>@Html.DisplayFor(modelItem => item.disc)</td>
+                        <td>@Html.DisplayFor(modelItem => item.sub_total)</td>
+                        <td>@Html.DisplayFor(modelItem => item.grand_total)</td>
+                    </tr>
+                    total = total + Convert.ToDecimal(item.grand_total);
+                    num++;
+                }
+            }
+	    </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" align="center">-</td>
+            </tr>
+             <tr>
+                <td colspan="5" align="center">TOTAL ALL</td>
+                <td>@total</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

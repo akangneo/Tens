@@ -1,0 +1,44 @@
+﻿@model Tens.Models.item_category
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="pull-right">
+					<a href="@Url.Content("~/Categories")" data-toggle="tooltip" title="Back To Grid" class="btn btn-default"><i class="fa fa-refresh"></i> Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Categories</h3>
+			</div>
+			<div class="panel-body">
+				@using (Html.BeginForm("Create", "Categories", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+                { 
+                     <div class="form-group required">
+						<label class="col-sm-2 control-label">Categories Code</label>
+						<div class="col-sm-6">
+							 @Html.LabelFor(model => model.item_category_code)
+						</div>
+					</div>
+                    <div class="form-group required">
+						<label class="col-sm-2 control-label">Categories Name</label>
+						<div class="col-sm-6">
+							 @Html.LabelFor(model => model.category_description)
+						</div>
+					</div>
+					
+                }
+			</div>
+		</div>
+	</div>
+</div>
+

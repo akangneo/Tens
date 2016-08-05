@@ -38,6 +38,3 @@ F:\Workspace\Visual Studio\TRAINING ASP MVC\Tens\Tens\bin\itextsharp.xtra.dll
 F:\Workspace\Visual Studio\TRAINING ASP MVC\Tens\Tens\bin\itextsharp.xmlworker.dll
 F:\Workspace\Visual Studio\TRAINING ASP MVC\Tens\Tens\bin\MvcRazorToPdf.dll
 F:\Workspace\Visual Studio\TRAINING ASP MVC\Tens\Tens\bin\itextsharp.xml
-E:\Work\Visual Studio\TRAINING ASP MVC\Tens\Tens\obj\Debug\Tens.csprojResolveAssemblyReference.cache
-E:\Work\Visual Studio\TRAINING ASP MVC\Tens\Tens\obj\Debug\Tens.dll
-E:\Work\Visual Studio\TRAINING ASP MVC\Tens\Tens\obj\Debug\Tens.pdb
